@@ -110,6 +110,7 @@ int convertBin(char *index_bits, int set_index){
   }
   return sum;
 }
+// find item with highest order cache to replace                                
 char *getIndexA(char *f_bin, int tag, int set_index){
   if(set_index == 0){
     return "NULL";
@@ -135,58 +136,9 @@ char *getTagA(char *f_bin, int tag){
   tag_bitsA[tag] = '\0';
   return (char *) tag_bitsA;
 }
-// returns 0 if tag is in set, else return 1                                    
-int check ( struct cache* set, char* tag, int ways ){
 
-  int i;
 
-  for( i = 0 ; i < ways ; i++ ){
 
-    if ( strcmp ( set[i].tag, tag ) == 0 ) return 0 ;
-
-  }
-  return 1;
-}
-
-// if set is full return 0                                                      
-int checkFull( struct cache* set, int ways ){
-
-  int i;
-
-  for( i = 0 ; i < ways ; i++ ){
-
-    if ( set[i].rank == ways ) return 0;
-  }
-
-  return 1;
-}
-
-// find item with highest order cache to replace                                
-int findReplaceIndex( struct cache* set, int ways ){
-
-  int i;
-
-  for ( i = 0 ; i < ways ; i++ ){
-
-    if ( set[i].rank == ways ) return i;
-  }
-
-  printf("shit be buggin");
-  return 0;
-}
-int findZeroRank( struct cache* set, int ways ){
-
-  int i;
-
-  for ( i = 0 ; i <ways ; i++ ){
-
-    if ( set[i].rank == 0 ) return i;
-  }
-
-  printf("shit be buggin");
-  return 0;
-
-}
 
 
 
@@ -252,28 +204,8 @@ rt, int offStart ){
     x++;
   }
 }
-int power( int base , int pow ){
 
-  int result = 1;
-  int count = pow;
-  while (count != 0){
-    result *= base;
-    count--;
-  }
-  return result;
-}
 
-int bin2Dec( char * bin ){
-
-  int result = 0;
-  int i;
-
-  for( i = 0 ; i < strlen(bin) ; i++ ){
-    if ( bin[i] == '0' ) continue;
-    result += power( 2 , strlen(bin) - 1 - i ) ;
-  }
-  return result;
-}
 char *xtend_Binary(char *binary){
   int missing_bits = 48 - strlen(binary);
   char *bin = (char *) malloc(sizeof(char) * (strlen(binary) + missing_bits + 1\
@@ -286,66 +218,8 @@ char *xtend_Binary(char *binary){
   strcat(bin, binary);
   return (char *) bin;
 }
-char *hex2Bin(char token){
-  char *binary = (char *) malloc(sizeof(char) * 5);
-  switch(token){
-  case '0':
-    strcat(binary, "0000\0"); break;
-  case '1':
-    strcat(binary, "0001\0"); break;
-  case '2':
-    strcat(binary, "0010\0"); break;
-  case '3':
-    strcat(binary, "0011\0"); break;
-  case '4':
-    strcat(binary, "0100\0"); break;
-  case '5':
-    strcat(binary, "0101\0"); break;
-  case '6':
-    strcat(binary, "0110\0"); break;
-  case '7':
-    strcat(binary, "0111\0"); break;
-  case '8':
-    strcat(binary, "1000\0"); break;
-  case '9':
-    strcat(binary, "1001\0"); break;
-  case 'a':
-    strcat(binary, "1010\0"); break;
-  case 'b':
-    strcat(binary, "1011\0"); break;
-  case 'c':
-    strcat(binary, "1100\0"); break;
-  case 'd':
-    strcat(binary, "1101\0"); break;
-  case 'e':
-    strcat(binary, "1110\0"); break;
-  case 'f':
-    strcat(binary, "1111\0"); break;
-  default:
-    break;
-  }
-  return (char *) binary;
-}
-char* getBinary ( char* address ){
 
 
-  char* bin, *temp;
-  int i,j,count;
-  count = 0;
-
-  char *binary = (char *) malloc(sizeof(char) * strlen(address) * 4);
-  for(i = 2; i < strlen(address); i++){
-    temp = hex2Bin(address[i]);
-    for(j = 0; j < 4; j++){
-      binary[count] = temp[j];
-      count++;
-    }
-  }
-
-  bin = xtend_Binary(binary);
-  free(binary);
-  return bin;
-}
 char *convertHex(char slot){
   char *binary = (char *) malloc(sizeof(char) * 5);
   switch(slot){
